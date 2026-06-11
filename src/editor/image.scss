@@ -13,7 +13,14 @@ img {
   cursor: pointer;
 }
 
-:is(div, span, p) > img {
+:is(div, span) > img {
+  border-radius: var(--radius-m);
+}
+
+/* Reading view wraps images in p > img. Round them on desktop and iPad, but
+   exclude the iPhone (.is-phone): rounding reading-view images there brings
+   back the iOS long-press corner flicker, so the phone keeps native corners. */
+body:not(.is-phone) p > img {
   border-radius: var(--radius-m);
 }
 
