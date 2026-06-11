@@ -8492,17 +8492,18 @@ body.is-tablet .modal-container .modal-sidebar:not(:has(+ .community-modal-detai
 }
 .is-mobile {
   /* ─── 3. Code blocks: overflow fix + Twitter/X-style header ─── */
-  /* Pin code block to content width (respects --file-margins on both sides),
-     then let code scroll horizontally inside — no wrapping */
+  /* pre is the static container (header lives here); code scrolls inside it */
 }
 .is-mobile .markdown-rendered pre {
   margin-inline: 0 !important;
   max-width: 100%;
   box-sizing: border-box;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
 }
 .is-mobile .markdown-rendered pre code {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   white-space: pre;
   word-break: normal;
   overflow-wrap: normal;
