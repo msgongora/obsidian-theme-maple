@@ -8462,12 +8462,16 @@ body.is-tablet .modal-container .modal-sidebar:not(:has(+ .community-modal-detai
   --h4-line-height: 1.25;
   --h5-line-height: 1.25;
   --h6-line-height: 1.25;
-  /* Reading mode headings: tight inter-line spacing, equal breathing room before and after */
+  /* Tighten inter-line spacing within headings. Upstream's breathing room came
+     from the large heading line-height (1.8×) whose half-leading added ~0.4em
+     of symmetric space above and below. Reducing line-height to 1.25 removes
+     most of that, so restore it as padding-block — padding never collapses and
+     is always equal top/bottom, regardless of the preceding element (paragraph,
+     image, list, etc.). Upstream margins are left untouched. */
 }
 .is-mobile .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
   line-height: 1.25;
-  margin-top: 0.6em;
-  margin-bottom: 0.6em;
+  padding-block: 0.3em;
 }
 .is-mobile {
   /* Live-preview / source mode headings */
