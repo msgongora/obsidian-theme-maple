@@ -339,7 +339,10 @@ body:not(.code-mac-style-header):not(.code-preview-bg) {
     }
 
     /* The language now lives in the left header, so the copy button becomes a
-       plain icon shown on hover (mobile hides it entirely — see mobile/layout). */
+       plain icon shown on hover (mobile hides it entirely — see mobile/layout).
+       The language feature replaced the icon with text; restore the SVG icon
+       with an explicit display/size/color (inline-flex collapses an SVG with no
+       intrinsic-sized flex children to zero width, hiding it). */
     .copy-code-button {
       opacity: 0;
 
@@ -348,12 +351,19 @@ body:not(.code-mac-style-header):not(.code-preview-bg) {
       }
 
       svg {
-        display: inline-flex !important;
+        display: inline-block !important;
+        width: var(--icon-size, var(--size-4-4));
+        height: var(--icon-size, var(--size-4-4));
+        color: var(--text-muted);
       }
     }
 
     &:hover .copy-code-button {
       opacity: 1;
+
+      svg {
+        color: var(--text-normal);
+      }
     }
   }
 }
