@@ -295,6 +295,11 @@ body .markdown-rendered pre {
   /* clip, NOT hidden: clip does not create a scroll container, so iOS cannot
      treat pre as a scroll target and the header pseudo-elements stay fixed. */
   overflow: clip;
+  /* Let the copy button's "Copy" tooltip paint above the block instead of being
+     clipped. overflow-clip-margin does NOT create a scroll container, so the iOS
+     scroll/header behavior is untouched, and the inner <code> clips itself so
+     code text still can't bleed out. */
+  overflow-clip-margin: var(--size-4-8);
 }
 
 .markdown-rendered pre code {
@@ -369,6 +374,8 @@ body:not(.code-mac-style-header):not(.code-preview-bg) {
          nothing). The icon thus lives inside the header bar, on the right. */
       z-index: 2;
 
+      /* Suppress the language-text label the .code-language feature injects on
+         ::before — the language now lives in the left header. */
       &::before {
         content: none !important;
       }
@@ -379,6 +386,30 @@ body:not(.code-mac-style-header):not(.code-preview-bg) {
         height: var(--icon-size, var(--size-4-4));
         color: var(--text-muted);
       }
+
+      /* Reading view's copy button has no aria-label, so it never gets
+         Obsidian's native "Copy" tooltip the way the live-view flair does.
+         Recreate it with a pseudo-element styled like .tooltip (see
+         workspace/message.scss) so both views behave the same on hover. */
+      &::after {
+        content: 'Copy';
+        position: absolute;
+        bottom: calc(100% + var(--size-2-2));
+        inset-inline-end: 0;
+        padding: var(--size-2-1) var(--size-2-3);
+        border-radius: var(--radius-s);
+        background-color: var(--background-modifier-message);
+        color: var(--text-on-accent);
+        font-family: var(--font-interface);
+        font-size: var(--font-ui-smaller);
+        font-weight: var(--font-normal);
+        line-height: 1;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity var(--animation-fast);
+        z-index: 3;
+      }
     }
 
     &:hover .copy-code-button {
@@ -388,6 +419,20 @@ body:not(.code-mac-style-header):not(.code-preview-bg) {
         color: var(--text-normal);
       }
     }
+
+    /* Reveal the tooltip only while hovering the icon itself — matching the
+       live-view behavior of hovering the copy icon. */
+    .copy-code-button:hover::after {
+      opacity: 1;
+    }
+  }
+}
+
+/* Honor the "hide tooltips" style setting (workspace/message.scss) for our
+   recreated copy tooltip too. */
+body.message-tooltip-hide:not(.code-mac-style-header):not(.code-preview-bg) {
+  .markdown-rendered pre[class*='language-'] .copy-code-button::after {
+    content: none !important;
   }
 }
 
