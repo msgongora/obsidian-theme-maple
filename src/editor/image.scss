@@ -13,7 +13,7 @@ img {
   cursor: pointer;
 }
 
-:is(div, span) > img {
+:is(div, span, p) > img {
   border-radius: var(--radius-m);
 }
 
