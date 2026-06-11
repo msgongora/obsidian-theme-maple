@@ -271,6 +271,7 @@ body .markdown-rendered pre {
 .markdown-rendered pre {
   margin-inline: 0 !important;
   padding-inline: 0 !important;
+  width: 100%;
   max-width: 100%;
   box-sizing: border-box;
   /* clip, NOT hidden: clip does not create a scroll container, so iOS cannot
@@ -280,6 +281,15 @@ body .markdown-rendered pre {
 
 .markdown-rendered pre code {
   display: block;
+  /* Pin code to the container width so the ENTIRE long line overflows inside
+     code (making it the sole, complete scroller) instead of spilling out of
+     pre. Without this, code renders at content width, its own scroll range is
+     tiny, and the remainder used to scroll pre — which now (overflow:clip)
+     can't, leaving the line truncated. */
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   overflow-x: auto;
   /* Stop the rubber-band bounce at the horizontal boundary so the gesture
      never propagates to a parent container. */
