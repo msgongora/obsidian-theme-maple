@@ -1,0 +1,78 @@
+@use '../utils' as *;
+
+.is-mobile {
+  /* ─── 1. Horizontal padding: 16px (down from ~32px default) ─── */
+  --file-margins: var(--size-4-4);
+
+  /* ─── 2. Heading line-height: tighter multi-line wrapping ─── */
+  @for $i from 1 through 6 {
+    --h#{$i}-line-height: 1.25;
+  }
+
+  /* Reading mode headings */
+  .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
+    line-height: 1.25;
+  }
+
+  /* Live-preview / source mode headings */
+  .markdown-source-view.mod-cm6 {
+    @for $i from 1 through 6 {
+      .HyperMD-header-#{$i} {
+        line-height: 1.25;
+      }
+    }
+  }
+
+  /* ─── 3. Code blocks: overflow fix + Twitter/X-style header ─── */
+
+  /* Prevent code content from overflowing the viewport */
+  .markdown-rendered pre {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Header bar only for labeled blocks; skip when mac-style-header or
+     code-preview-bg options are active (both already claim ::before/::after) */
+  &:not(.code-mac-style-header):not(.code-preview-bg) {
+    .markdown-rendered pre[class*='language-'] {
+      --mobile-code-header-h: calc(var(--font-ui-smaller) + var(--size-4-3));
+      position: relative;
+      padding-top: calc(var(--mobile-code-header-h) + var(--size-4-2)) !important;
+
+      /* Header bar background */
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        inset-inline: 0;
+        height: var(--mobile-code-header-h);
+        background-color: var(--background-primary-alt);
+        border-bottom: var(--code-border-width) solid var(--code-border-color);
+        border-start-start-radius: var(--code-radius);
+        border-start-end-radius: var(--code-radius);
+        pointer-events: none;
+      }
+
+      /* Language label on the left */
+      &::before {
+        content: var(--code-lang, '');
+        position: absolute;
+        top: 0;
+        inset-inline-start: var(--size-4-2);
+        height: var(--mobile-code-header-h);
+        line-height: var(--mobile-code-header-h);
+        font-family: var(--font-monospace);
+        font-size: var(--font-ui-smaller);
+        color: var(--setting-code-language-color, var(--inline-code));
+        font-weight: 550;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* No copy button on mobile */
+      .copy-code-button {
+        display: none !important;
+      }
+    }
+  }
+}

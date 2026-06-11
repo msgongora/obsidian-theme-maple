@@ -2,6 +2,10 @@
 @use './basic.scss';
 /* #endregion basic */
 
+/* #region layout */
+@use './layout.scss';
+/* #endregion layout */
+
 /* #region floating button */
 @use './floating-button.scss';
 /* #endregion floating button */
