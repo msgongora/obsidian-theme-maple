@@ -157,22 +157,21 @@ body.line-active-left .cm-active.HyperMD-header {
 
 // contracted line spacing (all platforms)
 //
-// Tighten inter-line spacing within multi-line headings. Upstream's breathing
-// room comes from the large heading line-height (~1.8x) whose half-leading adds
-// symmetric space above/below. Reduce line-height to 1.25 and restore the
-// before/after room as padding-block — padding never collapses and is always
-// equal top/bottom, regardless of the preceding element. The --h*-line-height
-// variables are left untouched so the heading-block indicator math still holds;
-// the direct line-height here overrides where it renders.
+// !important is required: Obsidian's base CSS scopes heading line-height to
+// .is-mobile/.markdown-reading-view which has higher specificity than our
+// .markdown-rendered selector, and it uses var(--h*-line-height) which resolves
+// to the large calculated value. !important is the only way to win regardless
+// of platform scope. The heading-block feature sets its own line-height (1.2)
+// which must also be !important to take effect; see the block section below.
 .markdown-rendered #{$headings} {
-  line-height: 1.25;
+  line-height: 1.25 !important;
   padding-block: 0.3em;
 }
 
 .markdown-source-view.mod-cm6 {
   @for $i from 1 through 6 {
     .HyperMD-header-#{$i} {
-      line-height: 1.25;
+      line-height: 1.25 !important;
     }
   }
 }
@@ -256,7 +255,7 @@ $full-selectors: ();
     }
     #{$selector} {
       width: fit-content;
-      line-height: 1.2;
+      line-height: 1.2 !important;
       --heading-spacing: calc(var(--h2-line-height) - 1.2 * var(--h#{$i}-size));
     }
 
