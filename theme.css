@@ -4201,9 +4201,9 @@ body:is(:not(.css-settings-manager), .code-language) .markdown-rendered pre[clas
   min-width: 0;
   box-sizing: border-box;
   overflow-x: auto;
-  /* Stop the rubber-band bounce at the horizontal boundary so the gesture
-     never propagates to a parent container. */
-  overscroll-behavior-x: none;
+  /* Keep the default momentum/rubber-band scroll feel — safe because pre uses
+     overflow:clip and can't be scrolled, so the header never moves regardless
+     of any boundary overscroll. */
   white-space: pre;
   word-break: normal;
   overflow-wrap: normal;
