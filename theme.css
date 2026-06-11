@@ -8496,6 +8496,7 @@ body.is-tablet .modal-container .modal-sidebar:not(:has(+ .community-modal-detai
 }
 .is-mobile .markdown-rendered pre {
   margin-inline: 0 !important;
+  padding-inline: 0 !important;
   max-width: 100%;
   box-sizing: border-box;
   overflow: hidden;
@@ -8507,6 +8508,7 @@ body.is-tablet .modal-container .modal-sidebar:not(:has(+ .community-modal-detai
   white-space: pre;
   word-break: normal;
   overflow-wrap: normal;
+  padding-inline-start: var(--size-4-2); /* 8px — scrolls away as code is panned left */
 }
 .is-mobile {
   /* Header bar only for labeled blocks; skip when mac-style-header or
