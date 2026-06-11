@@ -4183,13 +4183,17 @@ body:is(:not(.css-settings-manager), .code-language) .markdown-rendered pre[clas
   padding-inline: 0 !important;
   max-width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  /* clip, NOT hidden: clip does not create a scroll container, so iOS cannot
+     treat pre as a scroll target and the header pseudo-elements stay fixed. */
+  overflow: clip;
 }
 
 .markdown-rendered pre code {
   display: block;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  /* Stop the rubber-band bounce at the horizontal boundary so the gesture
+     never propagates to a parent container. */
+  overscroll-behavior-x: none;
   white-space: pre;
   word-break: normal;
   overflow-wrap: normal;
