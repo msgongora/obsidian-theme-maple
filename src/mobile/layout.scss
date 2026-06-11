@@ -27,10 +27,20 @@
 
   /* ─── 3. Code blocks: overflow fix + Twitter/X-style header ─── */
 
-  /* Wrap code lines to fit the screen width (X/Twitter style) */
+  /* Pin code block to content width (respects --file-margins on both sides),
+     then let code scroll horizontally inside — no wrapping */
+  .markdown-rendered pre {
+    margin-inline: 0 !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .markdown-rendered pre code {
-    white-space: pre-wrap;
-    word-break: break-word;
+    white-space: pre;
+    word-break: normal;
+    overflow-wrap: normal;
   }
 
   /* Header bar only for labeled blocks; skip when mac-style-header or
