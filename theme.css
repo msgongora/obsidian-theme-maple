@@ -4256,6 +4256,11 @@ body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[cl
 }
 body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] .copy-code-button {
   opacity: 0;
+  /* Sit above the header bar (::after, z-index auto) — otherwise the
+     opaque bar paints over the icon (clicks still pass through because
+     ::after is pointer-events:none, which is why it copied but showed
+     nothing). The icon thus lives inside the header bar, on the right. */
+  z-index: 2;
 }
 body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] .copy-code-button::before {
   content: none !important;
