@@ -8462,10 +8462,11 @@ body.is-tablet .modal-container .modal-sidebar:not(:has(+ .community-modal-detai
   --h4-line-height: 1.25;
   --h5-line-height: 1.25;
   --h6-line-height: 1.25;
-  /* Reading mode headings: tight inter-line spacing, clear gap after */
+  /* Reading mode headings: tight inter-line spacing, equal breathing room before and after */
 }
 .is-mobile .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
   line-height: 1.25;
+  margin-top: 0.6em;
   margin-bottom: 0.6em;
 }
 .is-mobile {
