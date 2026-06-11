@@ -134,16 +134,34 @@ code {
     background-color: var(--nav-item-background-hover);
   }
 
+  /* When the block has no language, Obsidian renders the flair as a bare copy
+     icon (an <svg>). Unlike reading view — where the copy button stays hidden
+     until the block is hovered — this icon is always visible and its sizing box
+     overflows the block's top-right corner. Match reading view: hide it until
+     hover and size it to sit neatly inside the corner. */
   &:has(svg) {
     width: var(--size-4-6);
     height: var(--size-4-6);
     padding: var(--size-4-1);
+    opacity: 0;
+    transition: opacity var(--animation-fast), background-color var(--animation);
 
     svg {
       width: var(--size-4-4);
       height: var(--size-4-4);
     }
   }
+
+  /* Reveal the copy-icon flair on hover. opacity:0 keeps it as a hit target, so
+     hovering the corner where it sits (or the code block's first line, which it
+     overlays) brings it back at the size set above. */
+  &:has(svg):hover {
+    opacity: 1;
+  }
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock-begin:hover .code-block-flair:has(svg) {
+  opacity: 1;
 }
 
 code[class*='language-'],
