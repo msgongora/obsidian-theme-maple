@@ -4107,6 +4107,9 @@ body:is(:not(.css-settings-manager), .code-language) pre.language-swift {
 body:is(:not(.css-settings-manager), .code-language) pre.language-tcl {
   --code-lang: 'TCL';
 }
+body:is(:not(.css-settings-manager), .code-language) pre:is(.language-text, .language-text, .language-plaintext) {
+  --code-lang: 'Text';
+}
 body:is(:not(.css-settings-manager), .code-language) pre.language-toml {
   --code-lang: 'TOML';
 }

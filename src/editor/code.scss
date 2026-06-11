@@ -218,7 +218,7 @@ body .markdown-rendered pre {
     Makefile, (Markdown, md), MATLAB, Mermaid, MongoDB, Monkey, Neon, Nginx, Nim, Nix, NSIS,
     (ObjectC, objc), OCaml, odin, OpenCL, Pascal, Perl, PHP, PHPDoc, PowerShell, Properties,
     ProtoBuf, Pug, (Python, py), QML, R, Regex, (ReScript, res), Rip, (Ruby, rb), (Rust, rs), Sass,
-    Scss, Scala, Solidity, SQL, stylus, Swift, TCL, TOML, (URI, url), (UnrealScript, uscript, uc),
+    Scss, Scala, Solidity, SQL, stylus, Swift, TCL, (Text, text, plaintext), TOML, (URI, url), (UnrealScript, uscript, uc),
     V, VBNet, Velocity, VHDL, Vim, (Visual-Basic, vb, vba), WASM, WGSL, WIKI, Wren, (YAML, yml), Zig;
 
   @each $lan in $language {
