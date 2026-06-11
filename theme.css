@@ -8490,11 +8490,11 @@ body.is-tablet .modal-container .modal-sidebar:not(:has(+ .community-modal-detai
 }
 .is-mobile {
   /* ─── 3. Code blocks: overflow fix + Twitter/X-style header ─── */
-  /* Prevent code content from overflowing the viewport */
+  /* Wrap code lines to fit the screen width (X/Twitter style) */
 }
-.is-mobile .markdown-rendered pre {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+.is-mobile .markdown-rendered pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 .is-mobile {
   /* Header bar only for labeled blocks; skip when mac-style-header or

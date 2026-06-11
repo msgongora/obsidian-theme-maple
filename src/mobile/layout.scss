@@ -25,10 +25,10 @@
 
   /* ─── 3. Code blocks: overflow fix + Twitter/X-style header ─── */
 
-  /* Prevent code content from overflowing the viewport */
-  .markdown-rendered pre {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  /* Wrap code lines to fit the screen width (X/Twitter style) */
+  .markdown-rendered pre code {
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   /* Header bar only for labeled blocks; skip when mac-style-header or
