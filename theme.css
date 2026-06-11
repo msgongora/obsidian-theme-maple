@@ -4173,6 +4173,83 @@ body:is(:not(.css-settings-manager), .code-language) .markdown-rendered pre[clas
   font-weight: 550;
 }
 
+/* ─── Twitter/X-style reading-mode code blocks (all platforms) ───
+   Contain the block to the available width with horizontal scroll (no wrap)
+   and render a fixed language-label header on the left. The header lives on
+   the static <pre>; the inner <code> is the scroll container, so the header
+   stays put while the code pans horizontally. */
+.markdown-rendered pre {
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.markdown-rendered pre code {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+  padding-inline-start: var(--size-4-2); /* scrolls away as code is panned left */
+}
+
+/* Skip when the mac-style-header or code-preview-bg options are active — both
+   already own pre's ::before/::after for their own headers. */
+body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] {
+  --code-header-h: calc(var(--font-ui-smaller) + var(--size-4-3));
+  position: relative;
+  padding-top: calc(var(--code-header-h) + var(--size-4-2)) !important;
+  /* Header bar background */
+}
+body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  height: var(--code-header-h);
+  background-color: var(--background-primary-alt);
+  border-bottom: var(--code-border-width) solid var(--code-border-color);
+  border-start-start-radius: var(--code-radius);
+  border-start-end-radius: var(--code-radius);
+  pointer-events: none;
+}
+body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] {
+  /* Language label on the left */
+}
+body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-]::before {
+  content: var(--code-lang, "");
+  position: absolute;
+  top: 0;
+  inset-inline-start: var(--size-4-2);
+  height: var(--code-header-h);
+  line-height: var(--code-header-h);
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+  color: var(--setting-code-language-color, var(--inline-code));
+  font-weight: 550;
+  pointer-events: none;
+  z-index: 1;
+}
+body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] {
+  /* The language now lives in the left header, so the copy button becomes a
+     plain icon shown on hover (mobile hides it entirely — see mobile/layout). */
+}
+body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] .copy-code-button {
+  opacity: 0;
+}
+body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] .copy-code-button::before {
+  content: none !important;
+}
+body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] .copy-code-button svg {
+  display: inline-flex !important;
+}
+body:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-]:hover .copy-code-button {
+  opacity: 1;
+}
+
 :is(.cm-tag, .cm-attribute, .cm-string:not(.cm-url)) {
   font-family: var(--font-monospace);
 }
@@ -5954,6 +6031,30 @@ body.line-active-left .cm-active.HyperMD-header-5::before {
 }
 body.line-active-left .cm-active.HyperMD-header-6::before {
   color: var(--h6-color) !important;
+}
+
+.markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
+  line-height: 1.25;
+  padding-block: 0.3em;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  line-height: 1.25;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-2 {
+  line-height: 1.25;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-3 {
+  line-height: 1.25;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-4 {
+  line-height: 1.25;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-5 {
+  line-height: 1.25;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-6 {
+  line-height: 1.25;
 }
 
 .heading-h1-underline :is(.HyperMD-header-1 .cm-header:not(.cm-formatting), .markdown-rendered h1) {
@@ -8453,108 +8554,12 @@ body.is-tablet .modal-container .modal-sidebar:not(:has(+ .community-modal-detai
 /* #endregion basic */
 /* #region layout */
 .is-mobile {
-  /* ─── 1. Horizontal padding: 16px (down from ~32px default) ─── */
+  /* ─── Horizontal padding: 16px (down from ~32px default) ─── */
   --file-margins: var(--size-4-4);
-  /* ─── 2. Heading line-height: tighter multi-line wrapping ─── */
-  --h1-line-height: 1.25;
-  --h2-line-height: 1.25;
-  --h3-line-height: 1.25;
-  --h4-line-height: 1.25;
-  --h5-line-height: 1.25;
-  --h6-line-height: 1.25;
-  /* Tighten inter-line spacing within headings. Upstream's breathing room came
-     from the large heading line-height (1.8×) whose half-leading added ~0.4em
-     of symmetric space above and below. Reducing line-height to 1.25 removes
-     most of that, so restore it as padding-block — padding never collapses and
-     is always equal top/bottom, regardless of the preceding element (paragraph,
-     image, list, etc.). Upstream margins are left untouched. */
-}
-.is-mobile .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
-  line-height: 1.25;
-  padding-block: 0.3em;
-}
-.is-mobile {
-  /* Live-preview / source mode headings */
-}
-.is-mobile .markdown-source-view.mod-cm6 .HyperMD-header-1 {
-  line-height: 1.25;
-}
-.is-mobile .markdown-source-view.mod-cm6 .HyperMD-header-2 {
-  line-height: 1.25;
-}
-.is-mobile .markdown-source-view.mod-cm6 .HyperMD-header-3 {
-  line-height: 1.25;
-}
-.is-mobile .markdown-source-view.mod-cm6 .HyperMD-header-4 {
-  line-height: 1.25;
-}
-.is-mobile .markdown-source-view.mod-cm6 .HyperMD-header-5 {
-  line-height: 1.25;
-}
-.is-mobile .markdown-source-view.mod-cm6 .HyperMD-header-6 {
-  line-height: 1.25;
-}
-.is-mobile {
-  /* ─── 3. Code blocks: overflow fix + Twitter/X-style header ─── */
-  /* pre is the static container (header lives here); code scrolls inside it */
-}
-.is-mobile .markdown-rendered pre {
-  margin-inline: 0 !important;
-  padding-inline: 0 !important;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-.is-mobile .markdown-rendered pre code {
-  display: block;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  white-space: pre;
-  word-break: normal;
-  overflow-wrap: normal;
-  padding-inline-start: var(--size-4-2); /* 8px — scrolls away as code is panned left */
-}
-.is-mobile {
-  /* Header bar only for labeled blocks; skip when mac-style-header or
-     code-preview-bg options are active (both already claim ::before/::after) */
-}
-.is-mobile:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] {
-  --mobile-code-header-h: calc(var(--font-ui-smaller) + var(--size-4-3));
-  position: relative;
-  padding-top: calc(var(--mobile-code-header-h) + var(--size-4-2)) !important;
-  /* Header bar background */
-}
-.is-mobile:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-]::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  inset-inline: 0;
-  height: var(--mobile-code-header-h);
-  background-color: var(--background-primary-alt);
-  border-bottom: var(--code-border-width) solid var(--code-border-color);
-  border-start-start-radius: var(--code-radius);
-  border-start-end-radius: var(--code-radius);
-  pointer-events: none;
-}
-.is-mobile:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] {
-  /* Language label on the left */
-}
-.is-mobile:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-]::before {
-  content: var(--code-lang, "");
-  position: absolute;
-  top: 0;
-  inset-inline-start: var(--size-4-2);
-  height: var(--mobile-code-header-h);
-  line-height: var(--mobile-code-header-h);
-  font-family: var(--font-monospace);
-  font-size: var(--font-ui-smaller);
-  color: var(--setting-code-language-color, var(--inline-code));
-  font-weight: 550;
-  pointer-events: none;
-  z-index: 1;
-}
-.is-mobile:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] {
-  /* No copy button on mobile */
+  /* The contracted heading spacing and the Twitter/X-style code block (left
+     language header + horizontal scroll) are now shared with desktop — see
+     src/editor/heading.scss and src/editor/code.scss. The only mobile-specific
+     override is hiding the copy button entirely (no copy icon on mobile). */
 }
 .is-mobile:not(.code-mac-style-header):not(.code-preview-bg) .markdown-rendered pre[class*=language-] .copy-code-button {
   display: none !important;

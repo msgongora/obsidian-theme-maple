@@ -1,97 +1,16 @@
 @use '../utils' as *;
 
 .is-mobile {
-  /* ─── 1. Horizontal padding: 16px (down from ~32px default) ─── */
+  /* ─── Horizontal padding: 16px (down from ~32px default) ─── */
   --file-margins: var(--size-4-4);
 
-  /* ─── 2. Heading line-height: tighter multi-line wrapping ─── */
-  @for $i from 1 through 6 {
-    --h#{$i}-line-height: 1.25;
-  }
-
-  /* Tighten inter-line spacing within headings. Upstream's breathing room came
-     from the large heading line-height (1.8×) whose half-leading added ~0.4em
-     of symmetric space above and below. Reducing line-height to 1.25 removes
-     most of that, so restore it as padding-block — padding never collapses and
-     is always equal top/bottom, regardless of the preceding element (paragraph,
-     image, list, etc.). Upstream margins are left untouched. */
-  .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
-    line-height: 1.25;
-    padding-block: 0.3em;
-  }
-
-  /* Live-preview / source mode headings */
-  .markdown-source-view.mod-cm6 {
-    @for $i from 1 through 6 {
-      .HyperMD-header-#{$i} {
-        line-height: 1.25;
-      }
-    }
-  }
-
-  /* ─── 3. Code blocks: overflow fix + Twitter/X-style header ─── */
-
-  /* pre is the static container (header lives here); code scrolls inside it */
-  .markdown-rendered pre {
-    margin-inline: 0 !important;
-    padding-inline: 0 !important;
-    max-width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-
-  .markdown-rendered pre code {
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    white-space: pre;
-    word-break: normal;
-    overflow-wrap: normal;
-    padding-inline-start: var(--size-4-2); /* 8px — scrolls away as code is panned left */
-  }
-
-  /* Header bar only for labeled blocks; skip when mac-style-header or
-     code-preview-bg options are active (both already claim ::before/::after) */
+  /* The contracted heading spacing and the Twitter/X-style code block (left
+     language header + horizontal scroll) are now shared with desktop — see
+     src/editor/heading.scss and src/editor/code.scss. The only mobile-specific
+     override is hiding the copy button entirely (no copy icon on mobile). */
   &:not(.code-mac-style-header):not(.code-preview-bg) {
-    .markdown-rendered pre[class*='language-'] {
-      --mobile-code-header-h: calc(var(--font-ui-smaller) + var(--size-4-3));
-      position: relative;
-      padding-top: calc(var(--mobile-code-header-h) + var(--size-4-2)) !important;
-
-      /* Header bar background */
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        inset-inline: 0;
-        height: var(--mobile-code-header-h);
-        background-color: var(--background-primary-alt);
-        border-bottom: var(--code-border-width) solid var(--code-border-color);
-        border-start-start-radius: var(--code-radius);
-        border-start-end-radius: var(--code-radius);
-        pointer-events: none;
-      }
-
-      /* Language label on the left */
-      &::before {
-        content: var(--code-lang, '');
-        position: absolute;
-        top: 0;
-        inset-inline-start: var(--size-4-2);
-        height: var(--mobile-code-header-h);
-        line-height: var(--mobile-code-header-h);
-        font-family: var(--font-monospace);
-        font-size: var(--font-ui-smaller);
-        color: var(--setting-code-language-color, var(--inline-code));
-        font-weight: 550;
-        pointer-events: none;
-        z-index: 1;
-      }
-
-      /* No copy button on mobile */
-      .copy-code-button {
-        display: none !important;
-      }
+    .markdown-rendered pre[class*='language-'] .copy-code-button {
+      display: none !important;
     }
   }
 }

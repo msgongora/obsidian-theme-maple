@@ -263,6 +263,87 @@ body .markdown-rendered pre {
   }
 }
 
+/* ─── Twitter/X-style reading-mode code blocks (all platforms) ───
+   Contain the block to the available width with horizontal scroll (no wrap)
+   and render a fixed language-label header on the left. The header lives on
+   the static <pre>; the inner <code> is the scroll container, so the header
+   stays put while the code pans horizontally. */
+.markdown-rendered pre {
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.markdown-rendered pre code {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+  padding-inline-start: var(--size-4-2); /* scrolls away as code is panned left */
+}
+
+/* Skip when the mac-style-header or code-preview-bg options are active — both
+   already own pre's ::before/::after for their own headers. */
+body:not(.code-mac-style-header):not(.code-preview-bg) {
+  .markdown-rendered pre[class*='language-'] {
+    --code-header-h: calc(var(--font-ui-smaller) + var(--size-4-3));
+    position: relative;
+    padding-top: calc(var(--code-header-h) + var(--size-4-2)) !important;
+
+    /* Header bar background */
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      inset-inline: 0;
+      height: var(--code-header-h);
+      background-color: var(--background-primary-alt);
+      border-bottom: var(--code-border-width) solid var(--code-border-color);
+      border-start-start-radius: var(--code-radius);
+      border-start-end-radius: var(--code-radius);
+      pointer-events: none;
+    }
+
+    /* Language label on the left */
+    &::before {
+      content: var(--code-lang, '');
+      position: absolute;
+      top: 0;
+      inset-inline-start: var(--size-4-2);
+      height: var(--code-header-h);
+      line-height: var(--code-header-h);
+      font-family: var(--font-monospace);
+      font-size: var(--font-ui-smaller);
+      color: var(--setting-code-language-color, var(--inline-code));
+      font-weight: 550;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* The language now lives in the left header, so the copy button becomes a
+       plain icon shown on hover (mobile hides it entirely — see mobile/layout). */
+    .copy-code-button {
+      opacity: 0;
+
+      &::before {
+        content: none !important;
+      }
+
+      svg {
+        display: inline-flex !important;
+      }
+    }
+
+    &:hover .copy-code-button {
+      opacity: 1;
+    }
+  }
+}
+
 :is(.cm-tag, .cm-attribute, .cm-string:not(.cm-url)) {
   font-family: var(--font-monospace);
 }

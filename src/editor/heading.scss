@@ -155,6 +155,28 @@ body.line-active-left .cm-active.HyperMD-header {
   }
 }
 
+// contracted line spacing (all platforms)
+//
+// Tighten inter-line spacing within multi-line headings. Upstream's breathing
+// room comes from the large heading line-height (~1.8x) whose half-leading adds
+// symmetric space above/below. Reduce line-height to 1.25 and restore the
+// before/after room as padding-block — padding never collapses and is always
+// equal top/bottom, regardless of the preceding element. The --h*-line-height
+// variables are left untouched so the heading-block indicator math still holds;
+// the direct line-height here overrides where it renders.
+.markdown-rendered #{$headings} {
+  line-height: 1.25;
+  padding-block: 0.3em;
+}
+
+.markdown-source-view.mod-cm6 {
+  @for $i from 1 through 6 {
+    .HyperMD-header-#{$i} {
+      line-height: 1.25;
+    }
+  }
+}
+
 // underline
 
 @for $i from 1 through 6 {
