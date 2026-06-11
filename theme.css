@@ -6038,6 +6038,10 @@ body.line-active-left .cm-active.HyperMD-header-6::before {
   padding-block: 0.3em;
 }
 
+.inline-title {
+  line-height: 1.25 !important;
+}
+
 .markdown-source-view.mod-cm6 .HyperMD-header-1 {
   line-height: 1.25 !important;
 }

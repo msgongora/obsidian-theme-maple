@@ -168,6 +168,14 @@ body.line-active-left .cm-active.HyperMD-header {
   padding-block: 0.3em;
 }
 
+// The note's inline title (the big "primary H1" at the top of a note) is a
+// .inline-title element, NOT an <h1> inside .markdown-rendered, so the rule
+// above misses it. Obsidian gives it line-height: var(--h1-line-height) — the
+// large calculated value — which reads as huge leading. Contract it to match.
+.inline-title {
+  line-height: 1.25 !important;
+}
+
 .markdown-source-view.mod-cm6 {
   @for $i from 1 through 6 {
     .HyperMD-header-#{$i} {
